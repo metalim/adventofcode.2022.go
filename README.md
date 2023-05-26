@@ -1,12 +1,12 @@
 # Advent of Code 2022
 
 These are my solutions to [Advent of Code 2022](https://adventofcode.com/2022) written in Go.
-This year I'm solving AoC just for practice.
+This year I'm solving AoC just for practice
 
 ## All years AoC solutions
 
 * 2022:
-  * [Go](https://github.com/metalim/metalim.adventofcode.2022.go) 👈 you are here.
+  * [Go](https://github.com/metalim/metalim.adventofcode.2022.go) 👈 you are here
 * 2021:
   * [Go](https://github.com/metalim/metalim.adventofcode.2021.go)
 * 2020:
