@@ -6,46 +6,23 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
-func catch(err error, args ...interface{}) {
-	if err == nil {
-		return
+func catch(err error) {
+	if err != nil {
+		panic(err)
 	}
-	if len(args) > 0 {
-		panic(errors.Wrap(err, fmt.Sprintf(args[0].(string), args[1:]...)))
-	}
-	panic(err)
-}
-
-func Input() string {
-	file := "input.txt"
-	if len(os.Args) > 1 {
-		file = os.Args[1]
-	}
-	input, err := os.ReadFile(file)
-	catch(err)
-	return strings.TrimSpace(string(input))
-}
-
-func Lines(input string) []string {
-	return strings.Split(input, "\n")
-}
-
-func Ints(lines []string) []int {
-	var err error
-	ints := make([]int, len(lines))
-	for i, line := range lines {
-		ints[i], err = strconv.Atoi(line)
-		catch(err, "line %d", i)
-	}
-	return ints
 }
 
 func main() {
-	lines := Lines(Input())
+	if len(os.Args) != 2 {
+		fmt.Println("Usage: go run main.go input.txt")
+		os.Exit(1)
+	}
+
+	bs, err := os.ReadFile(os.Args[1])
+	catch(err)
+	lines := strings.Split(string(bs), "\n")
 
 	// Part 1
 	{
