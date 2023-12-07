@@ -78,5 +78,71 @@ func part1(lines []string) {
 	fmt.Println("Part 1:", len(visible))
 }
 
+func getScore(lines []string, x0, y0 int) int {
+	mul := 1
+	c := lines[y0][x0]
+
+	// R
+	var score int
+	for x := x0 + 1; x < len(lines[0]); x++ {
+		score++
+		if lines[y0][x] >= c {
+			break
+		}
+	}
+	mul *= score
+
+	// L
+	score = 0
+	for x := x0 - 1; x >= 0; x-- {
+		score++
+		if lines[y0][x] >= c {
+			break
+		}
+	}
+	mul *= score
+
+	// D
+	score = 0
+	for y := y0 + 1; y < len(lines); y++ {
+		score++
+		if lines[y][x0] >= c {
+			break
+		}
+	}
+	mul *= score
+
+	// U
+	score = 0
+	for y := y0 - 1; y >= 0; y-- {
+		score++
+		if lines[y][x0] >= c {
+			break
+		}
+	}
+	mul *= score
+
+	return mul
+}
+
 func part2(lines []string) {
+	var largestScore int
+
+	for y, line := range lines {
+		if y == 0 || y == len(lines)-1 {
+			continue
+		}
+
+		for x := range line {
+			if x == 0 || x == len(line)-1 {
+				continue
+			}
+			score := getScore(lines, x, y)
+			if largestScore < score {
+				largestScore = score
+			}
+		}
+	}
+
+	fmt.Println("Part 2:", largestScore)
 }
