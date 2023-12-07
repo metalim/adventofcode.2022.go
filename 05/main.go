@@ -91,4 +91,16 @@ func part1(lines []string) {
 }
 
 func part2(lines []string) {
+	columns, moves := parse(lines)
+
+	for _, move := range moves {
+		columns[move.To] = append(columns[move.To], columns[move.From][len(columns[move.From])-move.Move:]...)
+		columns[move.From] = columns[move.From][:len(columns[move.From])-move.Move]
+	}
+
+	var top []rune
+	for _, column := range columns {
+		top = append(top, column[len(column)-1])
+	}
+	fmt.Println("Part 2:", string(top))
 }
