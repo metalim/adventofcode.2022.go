@@ -85,7 +85,24 @@ func (d *Dir) sumDirsLessThan(maxSize int) int {
 	return total
 }
 
-func part1(lines []string) {
+func (d *Dir) findDirAtLeast(minSize int) int {
+	minDirSize := d.getSize()
+	if minDirSize < minSize {
+		return -1
+	}
+	for _, dir := range d.dirs {
+		subdirSize := dir.findDirAtLeast(minSize)
+		if subdirSize < 0 {
+			continue
+		}
+		if minDirSize > subdirSize {
+			minDirSize = subdirSize
+		}
+	}
+	return minDirSize
+}
+
+func parseRoot(lines []string) *Dir {
 	root := &Dir{
 		dirs:  map[string]*Dir{},
 		files: map[string]int{},
@@ -108,8 +125,18 @@ func part1(lines []string) {
 			cwd.touch(entry[1], size)
 		}
 	}
+	return root
+}
+func part1(lines []string) {
+	root := parseRoot(lines)
 	fmt.Println("Part 1:", root.sumDirsLessThan(1e5))
 }
 
 func part2(lines []string) {
+	const driveSize = 7e7
+	const reqFree = 3e7
+
+	root := parseRoot(lines)
+	minFolderSize := root.findDirAtLeast(reqFree - driveSize + root.getSize())
+	fmt.Println("Part 2:", minFolderSize)
 }
