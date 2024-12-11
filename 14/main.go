@@ -100,6 +100,37 @@ func (g *Grid) Print() {
 	}
 }
 
+func bit(v rune) int {
+	if v == 0 {
+		return 0
+	}
+	return 1
+}
+
+var quarters = []rune(" ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█")
+
+func getSymbol(v0, v1, v2, v3 rune) rune {
+	i := bit(v0)<<3 | bit(v1)<<2 | bit(v2)<<1 | bit(v3)
+	return quarters[i]
+}
+
+func (g *Grid) PrintCompact() {
+	if !print {
+		return
+	}
+	for y := g.TL[1]; y <= g.BR[1]; y += 2 {
+		for x := g.TL[0]; x <= g.BR[0]; x += 2 {
+			p := Point{x, y}
+			v0 := g.Data[p]
+			v1 := g.Data[p.Add(Point{1, 0})]
+			v2 := g.Data[p.Add(Point{0, 1})]
+			v3 := g.Data[p.Add(Point{1, 1})]
+			fmt.Printf("%c", getSymbol(v0, v1, v2, v3))
+		}
+		fmt.Println()
+	}
+}
+
 func toInt(s string) int {
 	i, err := strconv.Atoi(s)
 	catch(err)
@@ -197,7 +228,7 @@ func part2(grid Grid) {
 			break
 		}
 	}
-	grid.Print()
+	grid.PrintCompact()
 
 	fmt.Printf("Part 2: %d\t\tin %v\n", count, time.Since(timeStart))
 }
